@@ -20,17 +20,13 @@ double f4(double x){
 }
 
 int main(){
-    long long int x=9900;
     cout << setprecision(16);
 	for(double i=0.99;i<=1.01;i+=0.0002){
-
 		cout<<i<<" | ";
 		cout<<f1(i)<<" | ";
 		cout<<f2(i)<<" | ";
 		cout<<f3(i)<<" | ";
-//		cout<<f3t(x)<<" | ";
 		cout<<f4(i)<<endl;
-        x+=2;
 	}
 	return 0;
 }

@@ -20,7 +20,7 @@ double f4(double x){
 }
 
 int main(){
-    cout << setprecision(16);
+    cout << setprecision(14);
 	for(double i=0.99;i<=1.01;i+=0.0002){
 		cout<<i<<" | ";
 		cout<<f1(i)<<" | ";

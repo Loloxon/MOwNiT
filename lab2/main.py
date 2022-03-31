@@ -7,6 +7,11 @@ import matplotlib.pyplot as plot
 
 # 4. Korohoda Nikodem f4, k=4, m=2, [-pi, 3pi]
 
+# dodac porownanie usuniecia efektu rungego
+# dodac limit kiedy cos sie psuje
+# ponumerowanie wykresów
+
+
 k = 4
 m = 2
 
@@ -23,6 +28,7 @@ def f(x):
 
 X = np.arange(min_x, max_x + 0.01, 0.01)
 N = len(X)
+print("N: ",N)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 
@@ -178,31 +184,39 @@ figure, axis = plot.subplots(2, 2)
 
 figure.suptitle("Highest difference")
 
+xd = 70
+
 n = i1
+n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawLagrangeEquidistant(n)
 
 n = i2
+n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawLagrangeCheby(n)
 
 n = i3
+n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawNewtonEquidistant(n)
 
 n = i4
+n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawNewtonCheby(n)
 
 plot.show()
+
+exit(0)
 
 min1 = min2 = min3 = min4 = 100000000
 i1 = i2 = i3 = i4 = -1

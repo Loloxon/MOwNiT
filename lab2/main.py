@@ -9,7 +9,7 @@ import matplotlib.pyplot as plot
 
 # dodac porownanie usuniecia efektu rungego
 # dodac limit kiedy cos sie psuje
-# ponumerowanie wykresów
+# ponumerowanie wykresów ...
 
 
 k = 4
@@ -57,7 +57,7 @@ def drawLagrangeEquidistant(N):
         axis[0, 0].scatter(x_pos, f(x_pos), label='data')
         axis[0, 0].plot(X, Lagrange(X, x_pos), label='Lagrange interpolated with equidistants')
         axis[0, 0].plot(X, f(X), label='Function')
-        axis[0, 0].set_title("Lagrange, Equidistant, n:" + str(N))
+        axis[0, 0].set_title("Metoda Lagrange'a, punkty równoodległe," + str(N) + " węzłów",fontweight="bold")
         axis[0, 0].set_xlabel("x")
         axis[0, 0].set_ylabel("y")
     return Lagrange(X, x_pos)
@@ -72,7 +72,7 @@ def drawLagrangeCheby(N):
         axis[0, 1].scatter(x, f(x), label='data')
         axis[0, 1].plot(X, Lagrange(X, x), label='Lagrange interpolated with Chebyshev')
         axis[0, 1].plot(X, f(X), label='Function')
-        axis[0, 1].set_title("Lagrange, Chebyshev, n:" + str(N))
+        axis[0, 1].set_title("Metoda Lagrange'a, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
         axis[0, 1].set_xlabel("x")
         axis[0, 1].set_ylabel("y")
     return Lagrange(X, x)
@@ -103,7 +103,7 @@ def drawNewtonEquidistant(N):
         axis[1, 0].scatter(x_pos, f(x_pos), label='data')
         axis[1, 0].plot(X, Newton(X, x_pos), label='Newton interpolated with equidistants')
         axis[1, 0].plot(X, f(X), label='Function')
-        axis[1, 0].set_title("Newton, Equidistant, n:" + str(N))
+        axis[1, 0].set_title("Metoda Newtona, punkty równoodległe," + str(N) + " węzłów", fontweight="bold")
         axis[1, 0].set_xlabel("x")
         axis[1, 0].set_ylabel("y")
     return Newton(X, x_pos)
@@ -118,7 +118,7 @@ def drawNewtonCheby(N):
         axis[1, 1].scatter(x, f(x), label='data')
         axis[1, 1].plot(X, Newton(X, x), label='Newton interpolated with Chebyshev')
         axis[1, 1].plot(X, f(X), label='Function')
-        axis[1, 1].set_title("Newton, Chebyshev, n:" + str(N))
+        axis[1, 1].set_title("Metoda Newtona, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
         axis[1, 1].set_xlabel("x")
         axis[1, 1].set_ylabel("y")
     return Newton(X, x)
@@ -184,39 +184,31 @@ figure, axis = plot.subplots(2, 2)
 
 figure.suptitle("Highest difference")
 
-xd = 70
-
 n = i1
-n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawLagrangeEquidistant(n)
 
 n = i2
-n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawLagrangeCheby(n)
 
 n = i3
-n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawNewtonEquidistant(n)
 
 n = i4
-n = xd
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawNewtonCheby(n)
 
 plot.show()
-
-exit(0)
 
 min1 = min2 = min3 = min4 = 100000000
 i1 = i2 = i3 = i4 = -1

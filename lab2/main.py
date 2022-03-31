@@ -5,13 +5,6 @@ from scipy.special import roots_chebyt
 
 import matplotlib.pyplot as plot
 
-# 4. Korohoda Nikodem f4, k=4, m=2, [-pi, 3pi]
-
-# dodac porownanie usuniecia efektu rungego
-# dodac limit kiedy cos sie psuje
-# ponumerowanie wykresów ...
-
-
 k = 4
 m = 2
 

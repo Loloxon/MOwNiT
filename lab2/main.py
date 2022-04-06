@@ -133,13 +133,13 @@ def comp_sqr(Y):
     return ans
 
 
-ctr = 30
+ctr = 19
 
 min1 = min2 = min3 = min4 = 100000000
 i1 = i2 = i3 = i4 = -1
 print("Obliczane różnice pierwszym sposobem")
 print("Węzły; Lagrange Equidistant; Lagrange Chebyshev; Newton Equidistant; Newton Chebyshev")
-for i in range(3, ctr + 1):
+for i in range(ctr, ctr + 1):
     n = i
     X = np.arange(min_x, max_x + 0.01, 0.01)
     x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))

@@ -24,23 +24,30 @@ def df(x):
         return [-k * m * (e ** (k * cos(m * i))) * sin(m * i) for i in x]
     return -k * m * (e ** (k * cos(m * x))) * sin(m * x)
 
-
-# print(f(0.0))
-# print(df(0.0))
-# print(f(0.1))
-# print(df(0.1))
-# exit(0)
-
 X = np.arange(min_x, max_x + 0.01, 0.01)
 N = len(X)
 print("N: ", N)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
+wykres_licznik=4
 
 def drawFunction():
-    plot.plot(X, f(X), label='Function')
+    plot.plot(X, f(X), label='Funkcja')
     plot.legend()
     plot.show()
+
+def Lagrange(x, x_pos):
+    def L(k, x):
+        prod = 1
+        for i in range(0, n):
+            if i != k:
+                prod *= (x - x_pos[i]) / (x_pos[k] - x_pos[i])
+        return prod
+
+    sum = 0
+    for k in range(0, n, 1):
+        sum += (f(x_pos[k]) * L(k, x))
+    return sum
 
 
 def Hermit(x, x_pos):
@@ -66,12 +73,14 @@ def Hermit(x, x_pos):
 
 def drawHermitEquidistant(N):
     if N:
-        axis[0].scatter(x_pos, f(x_pos), label='data')
-        axis[0].plot(X, Hermit(X, x_pos), label='Hermit interpolated with equidistants')
-        axis[0].plot(X, f(X), label='Function')
-        axis[0].set_title("Metoda Hermita, punkty równoodległe," + str(N) + " węzłów", fontweight="bold")
+        axis[0].scatter(x_pos, f(x_pos), label='Węzły')
+        axis[0].plot(X, f(X), label='Funkcja')
+        axis[0].plot(X, Hermit(X, x_pos), label='Metora Hermita z punktami równoodległymi')
+        axis[0].plot(X, Lagrange(X, x_pos), label='Metora Lagrange z punktami równoodległymi')
+        axis[0].set_title("Wyk. "+str(wykres_licznik)+"., Metoda Hermita, punkty równoodległe," + str(N) + " węzłów", fontweight="bold")
         axis[0].set_xlabel("x")
         axis[0].set_ylabel("y")
+        axis[0].legend()
     return Hermit(X, x_pos)
 
 
@@ -81,12 +90,14 @@ def drawHermitCheby(N):
     x += ((max_x + min_x) / 2)
 
     if N:
-        axis[1].scatter(x, f(x), label='data')
-        axis[1].plot(X, Hermit(X, x), label='Hermit interpolated with Chebyshev')
-        axis[1].plot(X, f(X), label='Function')
-        axis[1].set_title("Metoda Hermita, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
+        axis[1].scatter(x, f(x), label='Węzły')
+        axis[1].plot(X, f(X), label='Funkcja')
+        axis[1].plot(X, Hermit(X, x), label='Metora Hermita z punktami Chebysheva')
+        axis[1].plot(X, Lagrange(X, x), label='Metora Lagrange z punktami Chebysheva')
+        axis[1].set_title("Wyk. "+str(wykres_licznik)+"., Metoda Hermita, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
         axis[1].set_xlabel("x")
         axis[1].set_ylabel("y")
+        axis[1].legend()
     return Hermit(X, x)
 
 
@@ -106,7 +117,7 @@ def comp_sqr(Y):
     return ans
 
 
-ctr = 30
+ctr = 25
 
 min1 = min2 = 100000000
 i1 = i2 = -1
@@ -145,12 +156,14 @@ X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawHermitEquidistant(n)
+wykres_licznik += 1
 
 n = i2
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawHermitCheby(n)
+wykres_licznik += 1
 
 plot.show()
 
@@ -191,11 +204,13 @@ X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawHermitEquidistant(n)
+wykres_licznik += 1
 
 n = i2
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawHermitCheby(n)
+wykres_licznik += 1
 
 plot.show()

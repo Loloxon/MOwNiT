@@ -29,7 +29,7 @@ N = len(X)
 print("N: ", N)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
-wykres_licznik=1
+wykres_licznik=4
 
 def drawFunction():
     plot.plot(X, f(X), label='Funkcja')
@@ -75,9 +75,9 @@ def drawHermitEquidistant(N):
     if N:
         axis[0].scatter(x_pos, f(x_pos), label='Węzły')
         axis[0].plot(X, f(X), label='Funkcja')
-        axis[0].plot(X, Hermit(X, x_pos), label='Metora Hermita z punktami równoodległymi')
-        axis[0].plot(X, Lagrange(X, x_pos), label='Metora Lagrange z punktami równoodległymi')
-        axis[0].set_title("Wyk. "+str(wykres_licznik)+"., Metoda Hermita, punkty równoodległe," + str(N) + " węzłów", fontweight="bold")
+        axis[0].plot(X, Hermit(X, x_pos), label='Metoda Hermita z punktami równoodległymi')
+        axis[0].plot(X, Lagrange(X, x_pos), label='Metoda Lagrange z punktami równoodległymi')
+        axis[0].set_title("Wyk. "+str(wykres_licznik)+"., Metoda Hermita, punkty równoodległe, " + str(N) + " węzłów", fontweight="bold")
         axis[0].set_xlabel("x")
         axis[0].set_ylabel("y")
         axis[0].legend()
@@ -92,9 +92,9 @@ def drawHermitCheby(N):
     if N:
         axis[1].scatter(x, f(x), label='Węzły')
         axis[1].plot(X, f(X), label='Funkcja')
-        axis[1].plot(X, Hermit(X, x), label='Metora Hermita z punktami Chebysheva')
-        axis[1].plot(X, Lagrange(X, x), label='Metora Lagrange z punktami Chebysheva')
-        axis[1].set_title("Wyk. "+str(wykres_licznik)+"., Metoda Hermita, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
+        axis[1].plot(X, Hermit(X, x), label='Metoda Hermita z punktami Chebysheva')
+        axis[1].plot(X, Lagrange(X, x), label='Metoda Lagrange z punktami Chebysheva')
+        axis[1].set_title("Wyk. "+str(wykres_licznik)+"., Metoda Hermita, punkty Chebysheva, " + str(N) + " węzłów", fontweight="bold")
         axis[1].set_xlabel("x")
         axis[1].set_ylabel("y")
         axis[1].legend()
@@ -151,14 +151,14 @@ figure, axis = plot.subplots(2)
 
 figure.suptitle("Highest difference")
 
-n = i1
+n = 23
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawHermitEquidistant(n)
 wykres_licznik += 1
 
-n = i2
+n = 23
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 

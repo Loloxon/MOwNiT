@@ -8,6 +8,8 @@ import matplotlib.pyplot as plot
 from scipy.interpolate import interp1d
 # from scipy.interpolate import BSpline, make_interp_spline
 
+import numpy.linalg
+
 k = 4
 m = 2
 
@@ -47,34 +49,66 @@ f2 = interp1d(x_pos, y, kind='quadratic')
 f3 = interp1d(x_pos, y, kind='cubic')
 
 
-def s(x, degree):
-    def ro(i):
-        return ddf(x_pos[i]) / 6
+def h(i):
+    return x_pos[i] - x_pos[i - 1]
+def delt(i):
+    return (y[i] - y[i - 1]) / (x_pos[i] - x_pos[i - 1])
+def delt2(i):
+    return (delt(i + 1) - delt(i)) / (x_pos[i + 1] - x_pos[i - 1])
+def delt3(i):
+    return (delt2(i + 1) - delt2(i)) / (x_pos[i + 2] - x_pos[i - 1])
+A = [[0 for i in range(n)] for j in range(n)]
+# B = [0 for j in range(n)]
+P = [0 for j in range(n)]
+A[0][0] = -h(1)
+A[0][1] = h(1)
+for i in range(1, n - 1):
+    A[i][i - 1] = h(i)
+    A[i][i] = 2 * (h(i) + h(i + 1))
+    A[i][i + 1] = h(i + 1)
+A[n - 1][n - 2] = h(n - 1)
+A[n - 1][n - 1] = -h(n - 1)
+P[0] = h(1) ** 2 * delt3(1)
+for i in range(1, n - 1):
+    P[i] = delt(i + 1) - delt(i)
+P[n - 1] = -h(n - 1) ** 2 * delt3(n - 3)
 
-    def h(i):
-        return x_pos[i + 1] - x_pos[i]
+for i in A:
+    print(i)
+print(P)
+ro = np.linalg.solve(A, P)
+print(ro)
+
+def s(x, degree):
+
+    # def ro(i1):
+    # 
+    # 
+    #     # return ddf(x_pos[i]) / 6
+    #     return roo[i1]
+
 
     def b(i):
-        return (y[i + 1] - y[i]) / h(i) - h(i) * (ro(i + 1) + 2 * ro(i))
+        return (y[i] - y[i-1]) / h(i) - h(i) * (ro[i] + 2 * ro[i-1])
 
     def c(i):
-        return 3 * ro(i)
+        return 3 * ro[i-1]
 
     def d(i):
-        return (ro(i + 1) - ro(i)) / h(i)
+        return (ro[i] - ro[i-1]) / h(i)
 
     ans = []
     # for k in range(len(x_pos)):
     for j in range(len(x)):
         # if x[j]
         i = 0
-        while i < len(x_pos) - 1 and x_pos[i] < x[j]:
+        while i < len(x_pos) - 1 and x_pos[i] <= x[j]:
             i += 1
         i -= 1
         if degree == 3:
-            ans.append(y[i] + b(i) * (x[j] - x_pos[i]) + c(i) * (x[j] - x_pos[i]) ** 2 + d(i) * (x[j] - x_pos[i]) ** 3)
+            ans.append(y[i-1] + b(i) * (x[j-1] - x_pos[i-1]) + c(i) * (x[j-1] - x_pos[i-1]) ** 2 + d(i) * (x[j-1] - x_pos[i-1]) ** 3)
         elif degree == 2:
-            ans.append(y[i] + b(i) * (x[j] - x_pos[i]) + c(i) * (x[j] - x_pos[i]) ** 2)
+            ans.append(y[i-1] + b(i) * (x[j-1] - x_pos[i-1]) + c(i) * (x[j-1] - x_pos[i-1]) ** 2)
     return ans
 
 

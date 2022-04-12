@@ -2,7 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "lab1"
+			"path" : "lab1.exe"
+		},
+		{
+			"path" : "lab1.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -68,12 +71,16 @@
 			{
 				"fragment" : "",
 				"role" : "flags"
+			},
+			{
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
 	},
 	"name" : "lab1",
-	"nameOnDisk" : "lab1",
+	"nameOnDisk" : "lab1.exe",
 	"paths" : 
 	{
 		"build" : ".",

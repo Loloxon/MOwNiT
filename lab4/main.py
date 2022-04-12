@@ -9,6 +9,7 @@ from scipy.interpolate import interp1d
 # from scipy.interpolate import BSpline, make_interp_spline
 
 import numpy.linalg
+from scipy.special import roots_chebyt
 
 k = 4
 m = 2
@@ -17,6 +18,7 @@ n = 10
 min_x = -pi
 max_x = 3 * pi
 
+wykres_licznik=1
 
 def f(x):
     if not isinstance(x, float):
@@ -39,92 +41,120 @@ def ddf(x):
 X = np.arange(min_x, max_x + 0.01, 0.01)
 N = len(X)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
+y = f(x_pos)
+
+# x_pos, _ = roots_chebyt(n)
+# x_pos *= ((max_x - min_x) / 2)
+# x_pos += ((max_x + min_x) / 2)
 
 # x = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 x1 = np.linspace(min_x, max_x, num=30, endpoint=True)
 # y = np.cos(-x**2/9.0)
 y = f(x_pos)
-f1 = interp1d(x_pos, y, kind="linear")
-f2 = interp1d(x_pos, y, kind='quadratic')
-f3 = interp1d(x_pos, y, kind='cubic')
 
 
-def h(i):
-    return x_pos[i] - x_pos[i - 1]
-def delt(i):
-    return (y[i] - y[i - 1]) / (x_pos[i] - x_pos[i - 1])
-def delt2(i):
-    return (delt(i + 1) - delt(i)) / (x_pos[i + 1] - x_pos[i - 1])
-def delt3(i):
-    return (delt2(i + 1) - delt2(i)) / (x_pos[i + 2] - x_pos[i - 1])
-A = [[0 for i in range(n)] for j in range(n)]
-# B = [0 for j in range(n)]
-P = [0 for j in range(n)]
-A[0][0] = -h(1)
-A[0][1] = h(1)
-for i in range(1, n - 1):
-    A[i][i - 1] = h(i)
-    A[i][i] = 2 * (h(i) + h(i + 1))
-    A[i][i + 1] = h(i + 1)
-A[n - 1][n - 2] = h(n - 1)
-A[n - 1][n - 1] = -h(n - 1)
-P[0] = h(1) ** 2 * delt3(1)
-for i in range(1, n - 1):
-    P[i] = delt(i + 1) - delt(i)
-P[n - 1] = -h(n - 1) ** 2 * delt3(n - 3)
-
-for i in A:
-    print(i)
-print(P)
-ro = np.linalg.solve(A, P)
-print(ro)
-
-def s(x, degree):
-
-    # def ro(i1):
-    # 
-    # 
-    #     # return ddf(x_pos[i]) / 6
-    #     return roo[i1]
+# f1 = interp1d(x_pos, y, kind="linear")
+# f2 = interp1d(x_pos, y, kind='quadratic')
+# f3 = interp1d(x_pos, y, kind='cubic')
 
 
-    def b(i):
-        return (y[i] - y[i-1]) / h(i) - h(i) * (ro[i] + 2 * ro[i-1])
 
-    def c(i):
-        return 3 * ro[i-1]
-
-    def d(i):
-        return (ro[i] - ro[i-1]) / h(i)
-
-    ans = []
-    # for k in range(len(x_pos)):
-    for j in range(len(x)):
-        # if x[j]
-        i = 0
-        while i < len(x_pos) - 1 and x_pos[i] <= x[j]:
-            i += 1
-        i -= 1
-        if degree == 3:
-            ans.append(y[i-1] + b(i) * (x[j-1] - x_pos[i-1]) + c(i) * (x[j-1] - x_pos[i-1]) ** 2 + d(i) * (x[j-1] - x_pos[i-1]) ** 3)
-        elif degree == 2:
-            ans.append(y[i-1] + b(i) * (x[j-1] - x_pos[i-1]) + c(i) * (x[j-1] - x_pos[i-1]) ** 2)
-    return ans
 
 
 # bi·(x−xi) +ci·(x−xi)2+di·(x−xi)3dla x∈[xi,xi+1]
 # plot.plot()
-plot.plot(x_pos, y, 'o', X, f(X),
-          # x_pos, f1(x_pos), '-', x_pos, f2(x_pos), '--', x_pos, f3(x_pos), '--',
-          # X, s(X, 2), '--',
-          X, s(X, 3), '-.'
-          )
-plot.legend(['data', 'Funkcja',
-             # '1 stopnia', '2 stopnia', '3 stopnia',
-             # '2rd?',
-             '3rd?'
-             ], loc='best')
-plot.show()
+for i in range(4,20,3):
+    n=i
+    x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
+    y = f(x_pos)
+
+    def h(i):
+        return x_pos[i] - x_pos[i - 1]
+
+
+    def delt(i):
+        return (y[i] - y[i - 1]) / (x_pos[i] - x_pos[i - 1])
+
+
+    def delt2(i):
+        return (delt(i + 1) - delt(i)) / (x_pos[i + 1] - x_pos[i - 1])
+
+
+    def delt3(i):
+        return (delt2(i + 1) - delt2(i)) / (x_pos[i + 2] - x_pos[i - 1])
+
+
+    A = [[0 for i in range(n)] for j in range(n)]
+    # B = [0 for j in range(n)]
+    P = [0 for _ in range(n)]
+    A[0][0] = -h(1)
+    A[0][1] = h(1)
+    for i in range(1, n - 1):
+        A[i][i - 1] = h(i)
+        A[i][i] = 2 * (h(i) + h(i + 1))
+        A[i][i + 1] = h(i + 1)
+
+    A[n - 1][n - 2] = h(n - 1)
+    A[n - 1][n - 1] = -h(n - 1)
+    P[0] = h(1) ** 2 * delt3(1)
+    for i in range(1, n - 1):
+        P[i] = delt(i + 1) - delt(i)
+    P[n - 1] = -(h(n - 1) ** 2) * delt3(n - 3)
+
+    # for i in A:
+    #     print(i)
+    # print("P:")
+    # print(P)
+    ro = np.linalg.solve(A, P)
+    # print(ro)
+
+
+    def s(x, degree):
+        # def ro(i1):
+        #
+        #
+        #     # return ddf(x_pos[i]) / 6
+        #     return roo[i1]
+
+        def b(i):
+            return (y[i] - y[i - 1]) / h(i) - h(i) * (ro[i] + 2 * ro[i - 1])
+
+        def c(i):
+            return 3 * ro[i - 1]
+
+        def d(i):
+            return (ro[i] - ro[i - 1]) / h(i)
+
+        ans = []
+        # for k in range(len(x_pos)):
+        for j in range(len(x)):
+            # if x[j]
+            i = 0
+            while i < len(x_pos)-1 and x_pos[i] < x[j]:
+                i += 1
+            # i -= 1
+            if degree == 3:
+                ans.append(y[i - 1] + b(i) * (x[j - 1] - x_pos[i - 1]) + c(i) * (x[j - 1] - x_pos[i - 1]) ** 2 + d(i) * (
+                        x[j - 1] - x_pos[i - 1]) ** 3)
+            elif degree == 2:
+                ans.append(y[i - 1] + b(i) * (x[j - 1] - x_pos[i - 1]) + c(i) * (x[j - 1] - x_pos[i - 1]) ** 2)
+        return ans
+
+    plot.plot(x_pos, y, 'o', X, f(X),
+              # x_pos, f1(x_pos), '-', x_pos, f2(x_pos), '--', x_pos, f3(x_pos), '--',
+              # X, s(X, 2), '--',
+              X, s(X, 3), '-.'
+              )
+    plot.legend(['Wezly', 'Funkcja',
+                 # '1 stopnia', '2 stopnia', '3 stopnia',
+                 # '2rd?',
+                 '3rd?'
+                 ], loc='best')
+    plot.xlabel("x")
+    plot.ylabel("y")
+    plot.title("Wyk. "+str(wykres_licznik)+"., funkcja sklejana " + str(3) + " rzedu dla " + str(n) + " wezlow", fontweight="bold")
+    wykres_licznik+=1
+    plot.show()
 
 
 # wykres_licznik=4
@@ -133,7 +163,6 @@ def drawFunction():
     plot.plot(X, f(X), label='Funkcja')
     plot.legend()
     plot.show()
-
 
 # drawFunction()
 #

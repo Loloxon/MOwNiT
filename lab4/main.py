@@ -40,34 +40,26 @@ def ddf(x):
 
 X = np.arange(min_x, max_x + 0.01, 0.01)
 N = len(X)
-x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
-y = f(x_pos)
+# x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
-# x_pos, _ = roots_chebyt(n)
-# x_pos *= ((max_x - min_x) / 2)
-# x_pos += ((max_x + min_x) / 2)
+x_pos, _ = roots_chebyt(n)
+x_pos *= ((max_x - min_x) / 2)
+x_pos += ((max_x + min_x) / 2)
+y = f(x_pos)
 
 # x = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 x1 = np.linspace(min_x, max_x, num=30, endpoint=True)
-# y = np.cos(-x**2/9.0)
-y = f(x_pos)
-
-
-# f1 = interp1d(x_pos, y, kind="linear")
-# f2 = interp1d(x_pos, y, kind='quadratic')
-# f3 = interp1d(x_pos, y, kind='cubic')
 
 
 
-
-
-# bi·(x−xi) +ci·(x−xi)2+di·(x−xi)3dla x∈[xi,xi+1]
-# plot.plot()
-for i in range(4,20,3):
+for i in range(5,50,5):
     n=i
     x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
-    y = f(x_pos)
 
+    # x_pos, _ = roots_chebyt(n)
+    # x_pos *= ((max_x - min_x) / 2)
+    # x_pos += ((max_x + min_x) / 2)
+    y = f(x_pos)
     def h(i):
         return x_pos[i] - x_pos[i - 1]
 
@@ -109,6 +101,7 @@ for i in range(4,20,3):
     # print(ro)
 
 
+
     def s(x, degree):
         # def ro(i1):
         #
@@ -125,6 +118,39 @@ for i in range(4,20,3):
         def d(i):
             return (ro[i] - ro[i - 1]) / h(i)
 
+        B2 = []
+
+        def b2(i):
+            # print(i)
+            return B2[i-1]
+
+        def c2(i):
+            return (b2(i+1)-b2(i))/(2*h(i))
+
+        L = [[0 for i in range(n)] for j in range(n)]
+        # B = [0 for j in range(n)]
+        R = [0 for _ in range(n)]
+        L[0][0] = 1
+        L[0][1] = 0
+        for i in range(1, n - 1):
+            L[i][i - 1] = 1
+            L[i][i] = 1
+            # L[i][i + 1] = h(i + 1)
+
+        L[n - 1][n - 2] = 1
+        L[n - 1][n - 1] = 1
+        R[0] = 0
+        for i in range(1, n - 1):
+            R[i] = 2*delt(i)
+        R[n - 1] = 2*delt(n-1)
+        B2 = np.linalg.solve(L, R)
+        # print(B2)
+
+
+
+        # def c2(i):
+        #     return (b2(i+1)-b2(i))/(2*h(i))
+
         ans = []
         # for k in range(len(x_pos)):
         for j in range(len(x)):
@@ -137,17 +163,17 @@ for i in range(4,20,3):
                 ans.append(y[i - 1] + b(i) * (x[j - 1] - x_pos[i - 1]) + c(i) * (x[j - 1] - x_pos[i - 1]) ** 2 + d(i) * (
                         x[j - 1] - x_pos[i - 1]) ** 3)
             elif degree == 2:
-                ans.append(y[i - 1] + b(i) * (x[j - 1] - x_pos[i - 1]) + c(i) * (x[j - 1] - x_pos[i - 1]) ** 2)
+                ans.append(y[i - 1] + b2(i) * (x[j - 1] - x_pos[i - 1]) + c2(i) * (x[j - 1] - x_pos[i - 1]) ** 2)
         return ans
 
     plot.plot(x_pos, y, 'o', X, f(X),
               # x_pos, f1(x_pos), '-', x_pos, f2(x_pos), '--', x_pos, f3(x_pos), '--',
-              # X, s(X, 2), '--',
+              X, s(X, 2), '--',
               X, s(X, 3), '-.'
               )
     plot.legend(['Wezly', 'Funkcja',
                  # '1 stopnia', '2 stopnia', '3 stopnia',
-                 # '2rd?',
+                 '2rd?',
                  '3rd?'
                  ], loc='best')
     plot.xlabel("x")

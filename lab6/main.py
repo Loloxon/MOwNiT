@@ -12,7 +12,7 @@ from matplotlib.colors import LogNorm
 min_x = -pi
 max_x = 3 * pi
 
-graph_counter = 20
+graph_counter = 1
 
 samples = np.arange(min_x, max_x + 0.01, 0.01)
 samples_n = len(samples)
@@ -95,11 +95,11 @@ def aproxtry(nodes, values):
     return ANS
 
 
-'''
+
 def showGraph(x, y, nodes_n, degree, graph_counter):
     nodes = genEquidistant(nodes_n)
-    axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aprox(nodes, f(nodes), degree), '-.')
-    axis[x][y + 1].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aproxtry(nodes, f(nodes)), '-.')
+    # axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aprox(nodes, f(nodes), degree), '-.')
+    axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aproxtry(nodes, f(nodes)), '-.')
 
     axis[x][y].legend(['Punkty', 'Funkcja', "Przybliżenie"], loc='best')
     axis[x][y].set_xlabel("x")
@@ -112,7 +112,7 @@ def showGraph(x, y, nodes_n, degree, graph_counter):
     #     " punktów", fontweight="bold")
     graph_counter += 1
     return graph_counter
-'''
+
 
 
 # figure, axis = plot.subplots(2,2)
@@ -139,7 +139,7 @@ AR = []
 R = []
 C = []
 c_flag = 0
-for m in range(30, 1, -1):  # stopień
+for m in range(2, 1, -1):  # stopień
     AR.append([])
     R.append(m)
     # for n in range(m+1, m + 16):  # stopień       stopień<=punkty
@@ -150,7 +150,7 @@ for m in range(30, 1, -1):  # stopień
             AR[len(AR) - 1].append(0)
         else:
             nodes = genEquidistant(n)
-            d1 = comp_abs(aprox(nodes, f(nodes), m))
+            d1 = comp_abs(aproxtry(nodes, f(nodes)))
 
             AR[len(AR) - 1].append(d1)
             if min1 > d1 or min1 == -1:
@@ -160,21 +160,21 @@ for m in range(30, 1, -1):  # stopień
 
             print("punkty: ", n, ", stopień: ", m, "; ", d1)
             # if n%10==0 and m==60:
-    # if m==2:
+    if m==2:
     #     print()
     #     print("Najmniejsze niedokładności otrzymano dla:")
     #     print(n1, ": ", m1, ": ", min1, "; ")
     #     print("---------------------")
-    #     figure, axis = plot.subplots(2, 2)
-    #     figure.suptitle("Wykresy")
-    # graph_counter = showGraph(0, 0, n1, m1, graph_counter)
+        figure, axis = plot.subplots(2, 2)
+        figure.suptitle("Wykresy")
+        graph_counter = showGraph(0, 0, n1, m1, graph_counter)
     # graph_counter = showGraph(0, 1, n+10, m, graph_counter)
     # graph_counter = showGraph(1, 0, n+20, m, graph_counter)
     # graph_counter = showGraph(1, 1, n+30, m, graph_counter)
     # graph_counter = showGraph(i3, 1, 0, graph_counter)
     # graph_counter = showGraph(i5, 0, 1, graph_counter)
     # graph_counter = showGraph(i7, 1, 1, graph_counter)
-    # plot.show()
+        plot.show()
     c_flag = 1
 
 # Create a dataset

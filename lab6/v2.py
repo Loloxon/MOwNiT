@@ -17,6 +17,7 @@ from matplotlib.colors import LogNorm
 
 pd.set_option("display.precision", 3)
 
+graph_counter = 2
 
 def f(samples):
     k = 4
@@ -30,18 +31,20 @@ a = -1 * math.pi
 b = 3 * math.pi
 x_space = np.arange(a, b + 0.01, 0.01)
 
-def plot(space, *functions, points=None, title=None):
+def plott(space, *functions, points=None, title=None):
     plt.rcParams['figure.figsize'] = [9, 6]
 
     if points != None:
-        plt.scatter(points[0], points[1], label="nodes")
+        plt.scatter(points[0], points[1], label="Punkty")
     for foo, lbl, line in functions:
         plt.plot(space, foo(space), line, label=lbl)
 
     if title:
-        plt.title(title, y=-0.12)
+        plt.title(title, fontweight="bold")
 
-    plt.legend(bbox_to_anchor=(0.85, 0.23), loc='upper left', borderaxespad=0)
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.legend(bbox_to_anchor=(0.85, 0.23), borderaxespad=0)
     plt.grid()
     plt.show()
 
@@ -131,10 +134,10 @@ c_flag = 0
 
 
 best = -1
-for m in range(50, 1, -1): #stopien
+for m in range(30, 1, -1): #stopien
     AR.append([])
     R.append(m)
-    for n in range(3, 120, 2): # l. punktów
+    for n in range(3, 121): # l. punktów
         if c_flag == 0:
             C.append(n)
         if (n <= m*2):
@@ -153,7 +156,14 @@ for m in range(50, 1, -1): #stopien
                 best = diff
                 m1 = m
                 n1 = n
-            # print(m1, n1)
+            print(m, n)
+
+            # if (m==10 or m==15) and (n%40==0):
+            #     plott(x_space, [f, "Funkcja", "g-"], [F, "Przybliżenie", "r-"], points=[xs, f(xs)],
+            #           title=f"Wyk. " + str(graph_counter)
+            #                 + "., funkcja aproksymująca " + str(m) + " stopnia dla " + str(n) +
+            #                 " punktów")
+            #     graph_counter += 1
     c_flag = 1
 
     # if m==2:
@@ -163,19 +173,53 @@ ys = f(xs)
 ta = TrigonometricApproximation(m1, xs, ys, a, b)
 F = ta.approximate
 print(get_norm(F(x_space), f(x_space), 'max'))
-plot(x_space, [f, "f", "g-"], [F, "F", "b-"], points=[xs, f(xs)], title=f"n={n1}  m={m1}")
+# plott(x_space, [f, "Funkcja", "g-"], [F, "Przybliżenie", "r-"], points=[xs, f(xs)], title=f"Wyk. " + str(graph_counter)
+#     + "., funkcja aproksymująca " + str(m1) + " stopnia dla " + str(n1) +
+#         " punktów")
+# graph_counter+=1
+
 # plot(xs, ys)
 # plot(xs, ys, 'o', x_space, f(x_space), xs, TrigonometricApproximation(m1, xs, ys, a, b), '-.')
 # axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aproxtry(nodes, f(nodes), degree), '-.')
 
+# def showGraph(x, y, nodes_n, degree, graph_counter):
+#     # nodes = genEquidistant(nodes_n)
+#     # axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aprox(nodes, f(nodes), degree), '-.')
+#     plt.plot(xs, f(xs), 'o', x_space, f(x_space), x_space, TrigonometricApproximation(m1, xs, ys, a, b), '-.')
+#
+#     plt.legend(['Punkty', 'Funkcja', "Przybliżenie"], loc='best')
+#     plt.set_xlabel("x")
+#     plt.set_ylabel("y")
+#     plt.suptitle(
+#         "Wyk. " + str(graph_counter) + "., funkcja aproksymująca " + str(degree) + " stopnia dla " + str(nodes_n) +
+#         " punktów", fontweight="bold")
+#     # axis[x][y].set_title(
+#     #     "Wyk. " + str(graph_counter) + "., funkcja aproksymująca " + str(degree) + " stopnia dla " + str(nodes_n) +
+#     #     " punktów", fontweight="bold")
+#     graph_counter += 1
+#     return graph_counter
+#
+# figure, axis = plot.subplots(2, 2)
+# figure.suptitle("Wykresy")
+# graph_counter = showGraph(0, 0, n1, m1, graph_counter)
+# # graph_counter = showGraph(0, 1, n+10, m, graph_counter)
+# # graph_counter = showGraph(1, 0, n+20, m, graph_counter)
+# # graph_counter = showGraph(1, 1, n+30, m, graph_counter)
+# # graph_counter = showGraph(i3, 1, 0, graph_counter)
+# # graph_counter = showGraph(i5, 0, 1, graph_counter)
+# # graph_counter = showGraph(i7, 1, 1, graph_counter)
+# plot.show()
 
 
 print(AR)
 df = pd.DataFrame(AR, R, C)
+
+figure, axis = plot.subplots(1)
 
 # Default heatmap
 # cmap = sns.cm.rocket_r
 hm = sns.heatmap(df, square=True, cmap="Blues", cbar_kws = dict(use_gridspec=False,location="bottom"))
 hm.set(xlabel='Liczba punktów', ylabel='Stopień wielomianu')
 
-plot(hm)
+plot.show()
+# plott(hm)

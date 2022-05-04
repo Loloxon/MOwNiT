@@ -62,10 +62,11 @@ def aprox(nodes, values, degree):
     return ANS
 
 
-def aproxtry(nodes, values):
+def aproxtry(nodes, values, degree):
     # global a0
-    degree = len(nodes) // 2
+    # degree = len(nodes) // 2
     nodes_n = len(nodes)
+    # nodes_n2 = len(nodes)//2
     a0 = 0
     for i in values:
         a0 += i
@@ -74,23 +75,29 @@ def aproxtry(nodes, values):
     for j in range(degree):
         tmp = 0
         for i in range(nodes_n):
-            tmp += values[i] * cos(2 * pi * i * j / nodes_n)
+            # tmp += values[i] * cos(2 * pi * i * j / nodes_n)
+            tmp += values[i] * cos((j+1)*nodes[i])
         tmp *= (2 / nodes_n)
         A.append(tmp)
     B = []
     for j in range(degree):
         tmp = 0
         for i in range(nodes_n):
-            tmp += values[i] * sin(2 * pi * i * j / nodes_n)
+            # tmp += values[i] * sin(2 * pi * i * j / nodes_n)
+            tmp += values[i] * sin((j+1)*nodes[i])
         tmp *= (2 / nodes_n)
         B.append(tmp)
     ANS = []
     for s in samples:
         tmp = a0
         for i in range(degree):
-            tmp += A[i] * cos((i + 1) * s)
+            tmp += A[i] * cos((i + 1) * s) #(s-min_x)*pi*(2-1/nodes_n)/(max_x-min_x)-pi
+            # tmp += A[i] * cos((i + 1) * ((s-min_x)*pi*(2-2/nodes_n)/(max_x-min_x)-pi)) #(s-min_x)*pi*(2-1/nodes_n)/(max_x-min_x)-pi
+            # tmp += A[i] * cos(s)**(i + 1)
         for i in range(degree):
             tmp += B[i] * sin((i + 1) * s)
+            # tmp += B[i] * sin((i + 1) * (s-min_x)*pi*(2-2/nodes_n)/(max_x-min_x)-pi)
+            # tmp += B[i] * sin(s)**(i + 1)
         ANS.append(tmp)
     return ANS
 
@@ -99,7 +106,7 @@ def aproxtry(nodes, values):
 def showGraph(x, y, nodes_n, degree, graph_counter):
     nodes = genEquidistant(nodes_n)
     # axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aprox(nodes, f(nodes), degree), '-.')
-    axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aproxtry(nodes, f(nodes)), '-.')
+    axis[x][y].plot(nodes, f(nodes), 'o', samples, f(samples), samples, aproxtry(nodes, f(nodes), degree), '-.')
 
     axis[x][y].legend(['Punkty', 'Funkcja', "Przybliżenie"], loc='best')
     axis[x][y].set_xlabel("x")
@@ -139,18 +146,18 @@ AR = []
 R = []
 C = []
 c_flag = 0
-for m in range(2, 1, -1):  # stopień
+for m in range(30, 1, -1):  # stopień
     AR.append([])
     R.append(m)
-    # for n in range(m+1, m + 16):  # stopień       stopień<=punkty
-    for n in range(3, 80):  # punkty       stopień<=punkty
+    # for n in range(m+1, m + 16):  # stopień       stopień<punkty/2
+    for n in range(3, 80):  # punkty       stopień<punkty/2
         if c_flag == 0:
             C.append(n)
-        if (n <= m):
+        if (n <= m*2):
             AR[len(AR) - 1].append(0)
         else:
             nodes = genEquidistant(n)
-            d1 = comp_abs(aproxtry(nodes, f(nodes)))
+            d1 = comp_abs(aproxtry(nodes, f(nodes), m))
 
             AR[len(AR) - 1].append(d1)
             if min1 > d1 or min1 == -1:
@@ -178,7 +185,7 @@ for m in range(2, 1, -1):  # stopień
     c_flag = 1
 
 # Create a dataset
-ar = np.array([[1, 2], [3, 4]])
+# ar = np.array([[1, 2], [3, 4]])
 # d = {'col1': [1, 2], 'col2': [3, 4], 'col3': [3,0]}
 # df = pd.DataFrame(np.random.random((2,2)))
 # df = pd.DataFrame(ar)
@@ -187,7 +194,7 @@ df = pd.DataFrame(AR, R, C)
 
 # Default heatmap
 # cmap = sns.cm.rocket_r
-hm = sns.heatmap(df, square=True, norm=LogNorm(), cmap="Blues", cbar_kws = dict(use_gridspec=False,location="bottom"))
+hm = sns.heatmap(df, square=True, cmap="Blues", cbar_kws = dict(use_gridspec=False,location="bottom"))
 hm.set(xlabel='Liczba punktów', ylabel='Stopień wielomianu')
 
 plot.show()

@@ -8,7 +8,7 @@ from scipy.special import roots_chebyt
 min_x = -pi
 max_x = 3 * pi
 
-graph_counter = 13
+graph_counter = 10
 
 samples = np.arange(min_x, max_x + 0.01, 0.01)
 samples_n = len(samples)
@@ -192,7 +192,7 @@ print("n ",
       )
 min1 = min3 = min5 = min7 = -1
 # '''
-for i in range(5, 100):
+for i in range(5, 81):
     d1 = comp_abs(quadriSpline(genEquidistant(i), 0))
     d3 = comp_abs(quadriSpline(genEquidistant(i), 1))
     d5 = comp_abs(cubicSpline(genEquidistant(i), 0))
@@ -224,7 +224,7 @@ for i in range(5, 100):
         min7 = d7
         i7 = i
 
-    if i == 100 - 1:
+    if i == 81 - 1:
         print()
         print("Najmniejsze niedokładności otrzymano dla:")
         print(i1, ": ", min1, "; ", i3, ": ", min3, "; ", i5, ": ", min5, "; ", i7, ": ", min7, sep="")
@@ -232,8 +232,8 @@ for i in range(5, 100):
         figure, axis = plot.subplots(2, 2)
         figure.suptitle("Wykresy")
         graph_counter = showGraph(i1, 0, 0, graph_counter)
-        graph_counter = showGraph(i3, 1, 0, graph_counter)
         graph_counter = showGraph(i5, 0, 1, graph_counter)
+        graph_counter = showGraph(i3, 1, 0, graph_counter)
         graph_counter = showGraph(i7, 1, 1, graph_counter)
         plot.show()
 

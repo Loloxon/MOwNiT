@@ -29,7 +29,7 @@ N = len(X)
 print("N: ", N)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
-wykres_licznik=4
+wykres_licznik=8
 
 def drawFunction():
     plot.plot(X, f(X), label='Funkcja')
@@ -117,7 +117,7 @@ def comp_sqr(Y):
     return ans
 
 
-ctr = 25
+ctr = 80
 
 min1 = min2 = 100000000
 i1 = i2 = -1

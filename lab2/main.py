@@ -50,7 +50,7 @@ def drawLagrangeEquidistant(N):
         axis[0, 0].scatter(x_pos, f(x_pos), label='data')
         axis[0, 0].plot(X, Lagrange(X, x_pos), label='Lagrange interpolated with equidistants')
         axis[0, 0].plot(X, f(X), label='Function')
-        axis[0, 0].set_title("Metoda Lagrange'a, punkty równoodległe," + str(N) + " węzłów",fontweight="bold")
+        axis[0, 0].set_title("Wyk. 5., Metoda Lagrange'a, punkty równoodległe," + str(N) + " węzłów",fontweight="bold")
         axis[0, 0].set_xlabel("x")
         axis[0, 0].set_ylabel("y")
     return Lagrange(X, x_pos)
@@ -65,7 +65,7 @@ def drawLagrangeCheby(N):
         axis[0, 1].scatter(x, f(x), label='data')
         axis[0, 1].plot(X, Lagrange(X, x), label='Lagrange interpolated with Chebyshev')
         axis[0, 1].plot(X, f(X), label='Function')
-        axis[0, 1].set_title("Metoda Lagrange'a, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
+        axis[0, 1].set_title("Wyk. 2., Metoda Lagrange'a, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
         axis[0, 1].set_xlabel("x")
         axis[0, 1].set_ylabel("y")
     return Lagrange(X, x)
@@ -96,7 +96,7 @@ def drawNewtonEquidistant(N):
         axis[1, 0].scatter(x_pos, f(x_pos), label='data')
         axis[1, 0].plot(X, Newton(X, x_pos), label='Newton interpolated with equidistants')
         axis[1, 0].plot(X, f(X), label='Function')
-        axis[1, 0].set_title("Metoda Newtona, punkty równoodległe," + str(N) + " węzłów", fontweight="bold")
+        axis[1, 0].set_title("Wyk. 3., Metoda Newtona, punkty równoodległe," + str(N) + " węzłów", fontweight="bold")
         axis[1, 0].set_xlabel("x")
         axis[1, 0].set_ylabel("y")
     return Newton(X, x_pos)
@@ -111,7 +111,7 @@ def drawNewtonCheby(N):
         axis[1, 1].scatter(x, f(x), label='data')
         axis[1, 1].plot(X, Newton(X, x), label='Newton interpolated with Chebyshev')
         axis[1, 1].plot(X, f(X), label='Function')
-        axis[1, 1].set_title("Metoda Newtona, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
+        axis[1, 1].set_title("Wyk. 4., Metoda Newtona, punkty Chebysheva," + str(N) + " węzłów", fontweight="bold")
         axis[1, 1].set_xlabel("x")
         axis[1, 1].set_ylabel("y")
     return Newton(X, x)
@@ -132,13 +132,14 @@ def comp_sqr(Y):
         ans += (Y[i] - f(idx)) ** 2
     return ans
 
-
-ctr = 19
+ctr = 70
 
 min1 = min2 = min3 = min4 = 100000000
 i1 = i2 = i3 = i4 = -1
 print("Obliczane różnice pierwszym sposobem")
 print("Węzły; Lagrange Equidistant; Lagrange Chebyshev; Newton Equidistant; Newton Chebyshev")
+'''
+
 for i in range(ctr, ctr + 1):
     n = i
     X = np.arange(min_x, max_x + 0.01, 0.01)
@@ -167,7 +168,7 @@ for i in range(ctr, ctr + 1):
     if min4 > d4:
         min4 = d4
         i4 = n
-
+'''
 print()
 print("Najmniejsze niedokładności otrzymano dla:")
 print(i1, ": ", min1, "; ", i2, ": ", min2, "; ", i3, ": ", min3, "; ", i4, ": ", min4, sep="")
@@ -178,10 +179,12 @@ figure, axis = plot.subplots(2, 2)
 figure.suptitle("Highest difference")
 
 n = i1
+n=70
 X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawLagrangeEquidistant(n)
+'''
 
 n = i2
 X = np.arange(min_x, max_x + 0.01, 0.01)
@@ -200,6 +203,7 @@ X = np.arange(min_x, max_x + 0.01, 0.01)
 x_pos = np.arange(min_x, max_x + 0.01, (max_x - min_x) / (n - 1))
 
 drawNewtonCheby(n)
+'''
 
 plot.show()
 

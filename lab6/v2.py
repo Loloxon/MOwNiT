@@ -102,7 +102,7 @@ best = -1
 for m in range(30, 1, -1):  # stopien
     AR.append([])
     R.append(m)
-    for n in range(3, 81):  # l. punktów
+    for n in range(3, 1000):  # l. punktów
         if c_flag == 0:
             C.append(n)
         if (n <= m * 2):

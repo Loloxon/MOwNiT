@@ -4,19 +4,6 @@ import mpmath as mp
 import numpy as np
 from mpmath import *
 
-# import csv
-#
-# l1 = ['a', 'b', 'c', 'd', 'e']
-# l2 = ['f', 'g', 'i', 'j','k']
-# l3 = ['l', 'm', 'n', 'o', 'p']
-# l4 = ['q', 'r', 's', 't','u']
-# l5 = ['v', 'w', 'x', 'y', 'z']
-# r = zip(l1, l2, l3, l4, l5)
-# with open('Sample.csv', "w") as s:
-#     w = csv.writer(s)
-#     for row in r:
-#         w.writerow(row)
-
 
 # zad 1 – funkcja d) n=15, m=10, [-1.5, 0.3];
 # zad 2 – d)
@@ -62,7 +49,11 @@ def secant_method(a, b, epsilon, mode):
         else:
             if abs(f(x1))<epsilon:
                 return "moduł funkcji: {}".format(abs(f(x1))), i, x1
-        x0, x1 = x1, x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+        x0 = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+        # if(f(x1)*f(tmp)<=0):
+        #     x0, x1 = x, x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+        # else:
+        #     x0, x1 = x1, x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
     return -1, -1, x1
 
 def test_newton(epsilon, mode):
@@ -138,8 +129,9 @@ def test_secant(epsilon, mode):
 epsilon = 0.00000001
 # test_newton(epsilon, 1)
 print("=====================================")
-# test_secant(epsilon, 0)
+# test_secant(epsilon, 1)
 
+# '''
 def F(X):
     ret = [0,0,0]
     ret[0] = X[0]**2 + X[1]**2 + X[2] - 1
@@ -168,7 +160,7 @@ def newton_matrix(F: Callable[[List[float]], List[float]], J: Callable[[List[flo
             if np.linalg.norm(X-A) < epsilon: return X, iters
         elif exit == 2:
             if np.linalg.norm(F(X)) < epsilon: return X, iters
-        if iters > 500:
+        if iters > 10000:
             return ['x','x','x'], 'x'
 
 for end1 in [-1, -0.3, 0.3, 1]:
@@ -179,6 +171,7 @@ for end1 in [-1, -0.3, 0.3, 1]:
                 x1, iters2 = newton_matrix(F, J, [end1, end2, end3], prec, 1)
                 x2, iters1 = newton_matrix(F, J, [end1, end2, end3], prec, 2)
                 if prec != 0.000001:
-                    print(iters1,",",x1, end=" & ")
+                    print(iters2,",",x1, end=" & ")
                 else:
-                    print(iters1,",",x1, end=" \\\\ \\hline\n")
+                    print(iters2,",",x1, end=" \\\\ \\hline\n")
+# '''

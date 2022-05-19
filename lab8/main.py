@@ -22,7 +22,7 @@ def df(x):
     return n*x**(n-1)+m*x**(m-1)
 
 epsilon = 10e-24
-max_iteration = 10000
+max_iteration = 100000
 mp.dps = 8
 mp.prec = 8
 
@@ -36,12 +36,12 @@ def newton_method(x0, epsilon, mode):
             if abs(f(x1))<epsilon:
                 return "moduł funkcji: {}".format(abs(f(x1))), i, x1
         x0, x1 = x1, x1 - f(x1) / df(x1)
-    return -1, x1
+    return -1, -1, x1
 
 def secant_method(a, b, epsilon, mode):
     x0, x1 = a, b
-    if f(x0) * f(x1) > 0:
-        return "-", "-", "-"
+    # if f(x0) * f(x1) > 0:
+    #     return "-", "-", "-"
     for i in range(0,max_iteration):
         if mode==1:
             if abs(x0-x1)<epsilon:
@@ -49,7 +49,9 @@ def secant_method(a, b, epsilon, mode):
         else:
             if abs(f(x1))<epsilon:
                 return "moduł funkcji: {}".format(abs(f(x1))), i, x1
-        x0 = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+        if f(x1)-f(x0)==0:
+            return "-", "-", "-"
+        x0, x1 = x1, x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
         # if(f(x1)*f(tmp)<=0):
         #     x0, x1 = x, x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
         # else:
@@ -59,14 +61,55 @@ def secant_method(a, b, epsilon, mode):
 def test_newton(epsilon, mode):
     print("Od lewego krańca")
     for i in range(int(a*10), int(b*10)+1):
-        if(i!=0):
-            print(i/10, end='''         ''')
-            print(newton_method(i/10, epsilon, mode))
+        print(i/10, end=" & ")
+        if i!=0:
+            for epsilon in [0.01, 0.0001]:
+                diff, iters1, x1 = newton_method(i/10, epsilon, mode)
+                if epsilon != 0.0001:
+                    print(iters1,",",x1, end=" & ")
+                else:
+                    print(iters1,",",x1, end=" \\\\ \\hline\n")
+        else:
+            print("-", ",", "-", end=" & ")
+            print("-", ",", "-", end=" \\\\ \\hline\n")
+    for i in range(int(a*10), int(b*10)+1):
+        print(i/10, end=" & ")
+        if i!=0:
+            for epsilon in [0.000001, 0.00000001]:
+                diff, iters1, x1 = newton_method(i/10, epsilon, mode)
+                if epsilon != 0.00000001:
+                    print(iters1,",",x1, end=" & ")
+                else:
+                    print(iters1,",",x1, end=" \\\\ \\hline\n")
+        else:
+            print("-", ",", "-", end=" & ")
+            print("-", ",", "-", end=" \\\\ \\hline\n")
+
     print("Od prawego krańca")
     for i in range(int(b*10), int(a*10)-1, -1):
-        if(i!=0):
-            print(i/10, end='''         ''')
-            print(newton_method(i/10, epsilon, mode))
+        print(i/10, end=" & ")
+        if i!=0:
+            for epsilon in [0.01, 0.0001]:
+                diff, iters1, x1 = newton_method(i/10, epsilon, mode)
+                if epsilon != 0.0001:
+                    print(iters1,",",x1, end=" & ")
+                else:
+                    print(iters1,",",x1, end=" \\\\ \\hline\n")
+        else:
+            print("-", ",", "-", end=" & ")
+            print("-", ",", "-", end=" \\\\ \\hline\n")
+    for i in range(int(b*10), int(a*10)-1, -1):
+        print(i/10, end=" & ")
+        if i!=0:
+            for epsilon in [0.000001, 0.00000001]:
+                diff, iters1, x1 = newton_method(i/10, epsilon, mode)
+                if epsilon != 0.00000001:
+                    print(iters1,",",x1, end=" & ")
+                else:
+                    print(iters1,",",x1, end=" \\\\ \\hline\n")
+        else:
+            print("-", ",", "-", end=" & ")
+            print("-", ",", "-", end=" \\\\ \\hline\n")
 
 def test_secant(epsilon, mode):
     print("Od lewego krańca")
@@ -120,18 +163,22 @@ def test_secant(epsilon, mode):
         # print(secant_method(a, i/10, epsilon, mode))
 
         print([i/10, b], end=" & ")
-        for epsilon in [0.000001, 0.00000001]:
-            diff, iters1, x1 = secant_method(i/10, b, epsilon, mode)
-            if epsilon != 0.00000001:
-                print(iters1,",",x1, end=" & ")
-            else:
-                print(iters1,",",x1, end=" \\\\ \\hline\n")
+        if f(i/10)!=f(b):
+            for epsilon in [0.000001, 0.00000001]:
+                diff, iters1, x1 = secant_method(i/10, b, epsilon, mode)
+                if epsilon != 0.00000001:
+                    print(iters1,",",x1, end=" & ")
+                else:
+                    print(iters1,",",x1, end=" \\\\ \\hline\n")
+        else:
+            print("-", ",", "-", end=" & ")
+            print("-", ",", "-", end=" \\\\ \\hline\n")
 epsilon = 0.00000001
-# test_newton(epsilon, 1)
+test_newton(epsilon, 0)
 print("=====================================")
-# test_secant(epsilon, 1)
+# test_secant(epsilon, 0)
 
-# '''
+'''
 def F(X):
     ret = [0,0,0]
     ret[0] = X[0]**2 + X[1]**2 + X[2] - 1
@@ -174,4 +221,4 @@ for end1 in [-1, -0.3, 0.3, 1]:
                     print(iters2,",",x1, end=" & ")
                 else:
                     print(iters2,",",x1, end=" \\\\ \\hline\n")
-# '''
+'''

@@ -1,7 +1,11 @@
 from utils import *
 
 def zad1(max, min=2):
+    print("wielkość macierzy", end=" & ")
+    print("float", end=" & ")
+    print("decimal", end=" \\\\ \\hline\n")
     for n in range(min, max+1):
+        print(n, end=" & ")
         A = create_matrix_A(n)
         B = create_vector_B(A, n)
         X = gauss(A, B, n)
@@ -12,28 +16,58 @@ def zad1(max, min=2):
         print(find_diff_decimal(X, n), end=" \\\\ \\hline\n")
 
 def zad2(max, min=2):
+    print("wielkość macierzy", end=" & ")
+    print("błąd zad2.", end=" & ")
+    print("błąd zad1.", end=" \\\\ \\hline\n")
+
     for n in range(min, max+1):
+        print(n, end=" & ")
         A = create_matrix_A2(n)
-        # print(A)
+        B = create_vector_B(A, n)
+        X = gauss(A, B, n)
+        print(find_diff(X, n), end=" & ")
+
+        A = create_matrix_A(n)
         B = create_vector_B(A, n)
         X = gauss(A, B, n)
         print(find_diff(X, n), end=" \\\\ \\hline\n")
 
 def zad3(max, min = 2, k=4, m=4):
+    print("wielkość macierzy", end=" & ")
+    # print("algorytm gaussa", end=" & ")
+    print("czas obliczeń", end=" & ")
+    # print("algorytm thomasa", end=" & ")
+    print("czas obliczeń", end=" \\\\ \\hline\n")
+    # print("algorytm thomasa", end=" \\\\ \\hline\n")
+    times=[[],[]]
     for n in range(min, max+1):
+        print(n, end=" & ")
         A = create_matrix_A3(n, k, m)
-        # print(A)
         B = create_vector_B(A, n)
+        start = calc_time()
         X = gauss(A, B, n)
-        # print(X)
-        print(find_diff(X, n), end=" & ")
+        time1 = calc_time(start)
+        times[0].append(time1)
+        # print(find_diff(X, n), end=" & ")
+        print(time1, end=" & ")
+
         B = create_vector_B(A, n)
+        start = calc_time()
         X = thomas(A, B, n)
-        # print(X)
-        print(find_diff(X, n), end=" \\\\ \\hline\n")
+        time2 = calc_time(start)
+        times[1].append(time2)
+        # print(find_diff(X, n), end=" & ")
+        print(time2, end=" \\\\ \\hline\n")
+        # print(find_diff(X, n), end=" \\\\ \\hline\n")
+
+    df = pd.DataFrame(times,["gauss", "thomas"],[i for i in range(min,max+1)])
+    plot.subplots(1)
+    hm = sns.heatmap(df, center=0.1, cbar_kws=dict(use_gridspec=False, location="bottom"))
+    hm.set(xlabel='Wielkość macierzy', ylabel='Rodzaj algorytmu')
+    plot.show()
 
 
 # zad1(20)
-# zad2(20)
-zad3(200,200)
+zad2(200)
+# zad3(200)
 

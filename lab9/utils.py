@@ -1,6 +1,12 @@
 import numpy as np
+import time
 from decimal import Decimal
-
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plot
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.colors import LogNorm, Normalize
 
 def gauss_decimal(A, b, n):
     for k in range(0, n - 1):
@@ -56,20 +62,20 @@ def find_diff_decimal(newX, n):
 def thomas(A, B, n):
     beta = np.array([float(0) for _ in range(n)])
     gamma = np.array([float(0) for _ in range(n)])
-    beta[0] = -A[0,1]/A[0,0]
-    gamma[0] = B[0]/A[0,0]
-    for i in range(1,n):
-        denominator = (A[i, i-1]*beta[i-1]+A[i, i])
-        if i == n-1:
+    beta[0] = -A[0, 1] / A[0, 0]
+    gamma[0] = B[0] / A[0, 0]
+    for i in range(1, n):
+        denominator = (A[i, i - 1] * beta[i - 1] + A[i, i])
+        if i == n - 1:
             beta[i] = 0
         else:
-            beta[i] = -A[i, i+1]/denominator
-        gamma[i] = (B[i]-A[i, i-1]*gamma[i-1])/denominator
+            beta[i] = -A[i, i + 1] / denominator
+        gamma[i] = (B[i] - A[i, i - 1] * gamma[i - 1]) / denominator
 
     x = B.copy()
-    x[n-1] = gamma[n-1]
-    for i in range(n-2, -1, -1):
-        x[i] = beta[i]*x[i+1] + gamma[i]
+    x[n - 1] = gamma[n - 1]
+    for i in range(n - 2, -1, -1):
+        x[i] = beta[i] * x[i + 1] + gamma[i]
     return x
 
 
@@ -146,3 +152,10 @@ def find_diff(newX, n):
     for i in range(n):
         diff = max(diff, abs(oldX[i] - newX[i]))
     return diff
+
+
+def calc_time(start=0):
+    if start == 0:
+        return time.time()
+    else:
+        return time.time()-start

@@ -3,3 +3,6 @@ rozne ro, rozne wielkosci macierzy, czas tylko dla wyliczen kryteriów
 
 promien spektralny ma byc mniejszy od jedynki (niezaleznie od vektora poczatkowego metoda bedzie zbiezna)
 mozna uzyc bibliotegi do liczenia promienia spektralnego
+
+
+zweryfikować drugi warunek bo liczba iteracji maleje

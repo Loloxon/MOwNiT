@@ -1,3 +1,5 @@
+import copy
+
 import numpy
 import numpy as np
 import time
@@ -47,8 +49,8 @@ def calc_time(start=float(0)):
     else:
         return time.time()-start
 
-def jacoby(A, x, B, criterion, eps):
-    n = len(x)
+def jacoby(A):
+    n = len(A[0])
     L = np.array([[float(0) for _ in range(n)] for _ in range(n)])
     D = np.array([[float(0) for _ in range(n)] for _ in range(n)])
     U = np.array([[float(0) for _ in range(n)] for _ in range(n)])
@@ -63,34 +65,27 @@ def jacoby(A, x, B, criterion, eps):
 
     N = numpy.linalg.inv(D)
     M = np.dot(-N, (L + U))
+    return N, M
+
+
+def jacoby_iter(A1, M1, N1, x1, B1, criterion, eps):
+    A = copy.deepcopy(A1)
+    M = copy.deepcopy(M1)
+    N = copy.deepcopy(N1)
+    x = copy.deepcopy(x1)
+    B = copy.deepcopy(B1)
 
     start = calc_time()
     iterations = 1
-    x_new = np.dot(M, x) + np.dot(N, B)
+    x_new = np.add(np.dot(M, x),np.dot(N, B))
     if criterion == 0:
         while f1(x, x_new) > eps:
-            x, x_new = x_new, np.dot(M, x_new) + np.dot(N, B)
+            # print(f1(x, x_new))
+            x_new, x = np.add(np.dot(M, x_new),np.dot(N, B)), x_new
             iterations+=1
     elif criterion == 1:
-        while f2(x, A, B) > eps:
-            x, x_new = x_new, np.dot(M, x_new) + np.dot(N, B)
+        while f2(x_new, A, B) > eps:
+            x_new, x = np.add(np.dot(M, x_new),np.dot(N, B)), x_new
             iterations+=1
     return iterations, x_new, calc_time(start)
-
-def getM(A, x):
-    n = len(x)
-    L = np.array([[float(0) for _ in range(n)] for _ in range(n)])
-    D = np.array([[float(0) for _ in range(n)] for _ in range(n)])
-    U = np.array([[float(0) for _ in range(n)] for _ in range(n)])
-    for i in range(n):
-        for j in range(n):
-            if i > j:
-                L[i, j] = A[i, j]
-            if i == j:
-                D[i, j] = A[i, j]
-            if i < j:
-                U[i, j] = A[i, j]
-
-    N = numpy.linalg.inv(D)
-    M = np.dot(-N, (L + U))
-    return M
+    pass
